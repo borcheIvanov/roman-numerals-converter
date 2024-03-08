@@ -2,65 +2,80 @@ namespace roman_numerals_converter;
 
 public class NumberCounter
 {
-    private int _ones = 0;
-    private int _fives = 0;
-    private int _tens = 0;
-    private int _fifties = 0;
-    private int _hundreds = 0;
-    private int _fiveHundreds = 0;
-    private int _thousands = 0;
-    public void ReadChar(char c)
+    private enum RomanNumbers
     {
-        if (c == 'i') {
-            _ones++;
+        I,
+        V,
+        X,
+        L,
+        C,
+        D,
+        M
+    };
+
+    private Dictionary<RomanNumbers, int> Counters = new();
+
+    public NumberCounter()
+    {
+        foreach (var rn in Enum.GetValues<RomanNumbers>())
+        {
+            Counters[rn] = 0;
+        };
+    }
+
+    private void ReadChar(char c)
+    {
+        if (c == RomanNumbers.I.ToString()[0])
+        {
+            Counters[RomanNumbers.I] += 1;
         }
 
-        if (c == 'v') {
-            if (_ones > 0) {
-                _fives += 3;
+        if (c == RomanNumbers.V.ToString()[0]) {
+            if (Counters[RomanNumbers.I] > 0) {
+                Counters[RomanNumbers.V] += 3;
             } else {
-                _fives += 5;
+                Counters[RomanNumbers.V] += 5;
             }
         }
 
-        if (c == 'x') {
-            if (_ones > 0) {
-                _tens += 8;
+        if (c == RomanNumbers.X.ToString()[0]) {
+            if (Counters[RomanNumbers.I] > 0) {
+                Counters[RomanNumbers.X] += 8;
             } else {
-                _tens += 10;
+                Counters[RomanNumbers.X] += 10;
             }
         }
 
-        if (c == 'l') {
-            if (_tens > 1) {
-                _fifties += 30;	
+        if (c == RomanNumbers.L.ToString()[0]) {
+            if (Counters[RomanNumbers.X] > 1) {
+                Counters[RomanNumbers.L] += 30;
             } else {
-                _fifties += 50;
+                Counters[RomanNumbers.L] += 50;
             }
         }
 
-        if (c == 'c') {
-            _hundreds += 100;
+        if (c == RomanNumbers.C.ToString()[0]) {
+            Counters[RomanNumbers.C] += 100;
         }
 
-        if (c == 'd') {
-            _fiveHundreds += 500;
+        if (c == RomanNumbers.D.ToString()[0]) {
+            Counters[RomanNumbers.D] += 500;
         }
 
-        if (c == 'm') {
-            _thousands += 1000;
+        if (c == RomanNumbers.M.ToString()[0]) {
+            Counters[RomanNumbers.M] += 1000;
         }
     }
 
 
     public int Result()
     {
-        return _thousands + _fiveHundreds + _hundreds + _fifties + _tens + _fives + _ones;
+        return Counters.Sum(x => x.Value);
     }
 
     public void Convert(string number)
     {
-        foreach (var c in number)
+        foreach (var c in number.ToUpper())
         {
             ReadChar(c);
         }

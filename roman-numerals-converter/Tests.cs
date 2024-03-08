@@ -84,30 +84,15 @@ public class Tests
 		result.Should().Be("2778");
 	}
 	
-	[Fact]
-	public void Convert_4()
+	[Theory]
+	[InlineData("iv", "4")]
+	[InlineData("ix", "9")]
+	[InlineData("xlix", "49")]
+	public void Convert_complex(string number, string expected)
 	{
 		var sut = new Service();
-		var result = sut.ConvertToArabic("iv");
+		var result = sut.ConvertToArabic(number);
 
-		result.Should().Be("4");
-	}
-	
-	[Fact]
-	public void Convert_9()
-	{
-		var sut = new Service();
-		var result = sut.ConvertToArabic("ix");
-
-		result.Should().Be("9");
-	}
-	
-	[Fact]
-	public void Convert_49()
-	{
-		var sut = new Service();
-		var result = sut.ConvertToArabic("xlix");
-
-		result.Should().Be("49");
+		result.Should().Be(expected);
 	}
 }
