@@ -88,6 +88,9 @@ public class Tests
 	[InlineData("iv", "4")]
 	[InlineData("ix", "9")]
 	[InlineData("xlix", "49")]
+	[InlineData("xl", "40")]
+	[InlineData("xc", "90")]
+	[InlineData("cd", "400")]
 	public void Convert_complex(string number, string expected)
 	{
 		var sut = new Service();

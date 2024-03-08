@@ -47,7 +47,7 @@ public class NumberCounter
         }
 
         if (c == RomanNumbers.L.ToString()[0]) {
-            if (Counters[RomanNumbers.X] > 1) {
+            if (Counters[RomanNumbers.X] > 0) {
                 Counters[RomanNumbers.L] += 30;
             } else {
                 Counters[RomanNumbers.L] += 50;
@@ -55,18 +55,31 @@ public class NumberCounter
         }
 
         if (c == RomanNumbers.C.ToString()[0]) {
-            Counters[RomanNumbers.C] += 100;
+            if (Counters[RomanNumbers.X] > 0)
+            {
+                Counters[RomanNumbers.C] += 80;
+            }
+            else
+            {
+                Counters[RomanNumbers.C] += 100;
+            }
         }
 
         if (c == RomanNumbers.D.ToString()[0]) {
-            Counters[RomanNumbers.D] += 500;
+            if (Counters[RomanNumbers.C] > 0)
+            {
+                Counters[RomanNumbers.D] += 300;
+            }
+            else
+            {
+                Counters[RomanNumbers.D] += 500;
+            }
         }
 
         if (c == RomanNumbers.M.ToString()[0]) {
             Counters[RomanNumbers.M] += 1000;
         }
     }
-
 
     public int Result()
     {
