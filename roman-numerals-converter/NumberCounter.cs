@@ -2,95 +2,44 @@ namespace roman_numerals_converter;
 
 public class NumberCounter
 {
-    private enum RomanNumbers
+    private readonly Dictionary<char, int> _romanNumbers = new()
     {
-        I,
-        V,
-        X,
-        L,
-        C,
-        D,
-        M
+        { 'I', 1 },
+        { 'V', 5 },
+        { 'X', 10 },
+        { 'L', 50 },
+        { 'C', 100 },
+        { 'D', 500 },
+        { 'M', 1000 }
     };
 
-    private Dictionary<RomanNumbers, int> Counters = new();
-
-    public NumberCounter()
+    public int Convert(string roman)
     {
-        foreach (var rn in Enum.GetValues<RomanNumbers>())
+        roman = roman.ToUpper();
+        
+        var totalValue = 0;
+        var previousValue = 0;
+
+        foreach (var c in roman)
         {
-            Counters[rn] = 0;
-        };
-    }
-
-    private void ReadChar(char c)
-    {
-        if (c == RomanNumbers.I.ToString()[0])
-        {
-            Counters[RomanNumbers.I] += 1;
-        }
-
-        if (c == RomanNumbers.V.ToString()[0]) {
-            if (Counters[RomanNumbers.I] > 0) {
-                Counters[RomanNumbers.V] += 3;
-            } else {
-                Counters[RomanNumbers.V] += 5;
-            }
-        }
-
-        if (c == RomanNumbers.X.ToString()[0]) {
-            if (Counters[RomanNumbers.I] > 0) {
-                Counters[RomanNumbers.X] += 8;
-            } else {
-                Counters[RomanNumbers.X] += 10;
-            }
-        }
-
-        if (c == RomanNumbers.L.ToString()[0]) {
-            if (Counters[RomanNumbers.X] > 0) {
-                Counters[RomanNumbers.L] += 30;
-            } else {
-                Counters[RomanNumbers.L] += 50;
-            }
-        }
-
-        if (c == RomanNumbers.C.ToString()[0]) {
-            if (Counters[RomanNumbers.X] > 0)
+            if (!_romanNumbers.TryGetValue(c, out var value))
             {
-                Counters[RomanNumbers.C] += 80;
+                throw new ArgumentException($"Invalid Roman numeral character: {c}");
+            }
+
+            if (value > previousValue)
+            {
+                // Adjust for previous addition
+                totalValue += value - 2 * previousValue;
             }
             else
             {
-                Counters[RomanNumbers.C] += 100;
+                totalValue += value;
             }
+
+            previousValue = value;
         }
 
-        if (c == RomanNumbers.D.ToString()[0]) {
-            if (Counters[RomanNumbers.C] > 0)
-            {
-                Counters[RomanNumbers.D] += 300;
-            }
-            else
-            {
-                Counters[RomanNumbers.D] += 500;
-            }
-        }
-
-        if (c == RomanNumbers.M.ToString()[0]) {
-            Counters[RomanNumbers.M] += 1000;
-        }
-    }
-
-    public int Result()
-    {
-        return Counters.Sum(x => x.Value);
-    }
-
-    public void Convert(string number)
-    {
-        foreach (var c in number.ToUpper())
-        {
-            ReadChar(c);
-        }
+        return totalValue;
     }
 }

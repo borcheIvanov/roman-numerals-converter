@@ -91,6 +91,7 @@ public class Tests
 	[InlineData("xl", "40")]
 	[InlineData("xc", "90")]
 	[InlineData("cd", "400")]
+	[InlineData("cm", "900")]
 	public void Convert_complex(string number, string expected)
 	{
 		var sut = new Service();
